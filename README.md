@@ -23,7 +23,11 @@ Este workflow automatiza a criação e publicação de conteúdo educacional no 
 - 💬 Publica automaticamente no LinkedIn
 - 📚 Integra-se a uma série educacional chamada “Dicionário de Dados”
 
----
+--- 
+
+>> <h3> Workflow </h3>
+
+![delta](img/flow.png)
 
 ## 🧩 Componentes Principais
 
