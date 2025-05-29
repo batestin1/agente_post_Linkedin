@@ -1,0 +1,315 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "person": "Yk_aBVazaP",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.linkedIn",
+      "typeVersion": 1,
+      "position": [
+        840,
+        -80
+      ],
+      "id": "c835c61d-a335-415e-b56c-c815cc2442be",
+      "name": "LinkedIn",
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "4KJ5oVx2ihNEvUVQ",
+          "name": "LinkedIn account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1zF2UlQiirMArYn4yj6A_l9-tmoYxW3NQBoQ-EqMbjT0",
+          "mode": "list",
+          "cachedResultName": "temas_dicionario_de_dados",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zF2UlQiirMArYn4yj6A_l9-tmoYxW3NQBoQ-EqMbjT0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zF2UlQiirMArYn4yj6A_l9-tmoYxW3NQBoQ-EqMbjT0/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -220,
+        -100
+      ],
+      "id": "7bbc5a5e-80be-481c-9820-26e0ee9dc7e8",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ssQu2ShbRufk6HgS",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -100
+      ],
+      "id": "8506325f-2377-482e-84ec-1b526cbc0a71",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "documentId": {
+          "__rl": true,
+          "value": "1zF2UlQiirMArYn4yj6A_l9-tmoYxW3NQBoQ-EqMbjT0",
+          "mode": "list",
+          "cachedResultName": "temas_dicionario_de_dados",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zF2UlQiirMArYn4yj6A_l9-tmoYxW3NQBoQ-EqMbjT0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zF2UlQiirMArYn4yj6A_l9-tmoYxW3NQBoQ-EqMbjT0/edit#gid=0"
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -140,
+        200
+      ],
+      "id": "7451eb69-76f3-41f6-b552-e44cec87f494",
+      "name": "Google Sheets1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ssQu2ShbRufk6HgS",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        260,
+        140
+      ],
+      "id": "a236e54b-1f28-4366-8413-56c8700d0a35",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "ffy7fzXHCGL6Abjj",
+          "name": "Groq account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Você é um especialista em criar conteúdo envolvente para LinkedIn, focado em posts curtos, dinâmicos e didáticos.\n\nO tema do post é: {{ $json.COLUNAS }}.\n\nEste post faz parte da série “Dicionário de Dados” — lembre o leitor disso para que ele entenda que estamos descomplicando termos essenciais para profissionais como cientistas de dados, engenheiros de dados, analistas e todos que vivem o universo data-driven.\n\nFale sempre em primeira pessoa, com um tom alegre, próximo e cheio de energia. Revele curiosidades interessantes sobre o tema, facilitando a compreensão e mostrando a relevância na prática.\n\nInclua emojis para tornar a leitura leve e atraente.\n\nAo final, incentive o leitor a continuar aprendendo, oferecendo links em https para que os usuários possam estar clicando\n\nSeja objetivo, direto e, ao mesmo tempo, convidativo para que o público se envolva e queira saber mais.\n\nResponda sempre em portugues, Brazil.\n\nuse as #ibm #dicionariodedados #cienciadedaos #machinelearning",
+        "options": {
+          "maxIterations": 50
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        300,
+        -80
+      ],
+      "id": "5cf36c8e-ffd1-46d7-8d83-0bc5fa24c5e4",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.COLUNAS }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        420,
+        160
+      ],
+      "id": "ec808e0c-63a6-4a9e-9e9e-b77be3c751d3",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "options": {
+          "google_domain": "google.com",
+          "hl": "pt"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+      "typeVersion": 1,
+      "position": [
+        540,
+        140
+      ],
+      "id": "10b63b08-5c31-4f98-9292-b5e2825fbcea",
+      "name": "SerpAPI",
+      "credentials": {
+        "serpApi": {
+          "id": "2TRkwzRJe8NkBZ4M",
+          "name": "SerpAPI account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 20
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        60,
+        60
+      ],
+      "id": "69524b5e-a810-4c1d-b8e2-fe4304a56abd",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 21
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -480,
+        -100
+      ],
+      "id": "cfa56c48-1248-4268-8ad6-a52349e35044",
+      "name": "Schedule Trigger1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        []
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SerpAPI": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "LinkedIn",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1dd32701-b3fb-43bf-92c0-bc4dc3ca10f2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0253b636194e5fe8746671bb282e15d13a12377a9997fb384b4279ec1cfb39e8"
+  },
+  "id": "qkPXjHuGMJ13iGJN",
+  "tags": []
+}
